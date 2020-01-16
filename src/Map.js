@@ -1,22 +1,21 @@
 "use strict";
-// import * as d3 from "d3";
-// import data from "./villes.csv";
 import React, { Component } from "react";
-import Soutien from "./Soutien";
-
-// var d3 = Object.assign(
-//   {},
-//   require("d3"),
-//   require("d3-format"),
-//   require("d3-geo"),
-//   require("d3-geo-projection")
-// );
 
 class Map extends Component {
+  constructor(props) {
+    super(props);
+  }
+
   componentDidMount() {
-    // this.drawChart();
     this.draw();
   }
+
+  // componentDidUpdate(prevProps) {
+  //   // Typical usage (don't forget to compare props):
+  //   if (this.props.interaction !== prevProps.interaction) {
+  //     console.log("this.props.interaction", this.props.interaction);
+  //   }
+  // }
 
   draw() {
     const mymap = L.map(document.querySelector(".map")).setView(
@@ -37,17 +36,13 @@ class Map extends Component {
     ).addTo(mymap);
 
     var marker = L.marker([46.79942865121552, 2.9865881441615505]).addTo(mymap);
-    // marker;
-    // .bindPopup(
-    //   "<b><a href=''>Manifestation </a></b>, <br> Contre la réforme des retraites"
-    // )
-    // .openPopup();
     marker.on("click", onPopupClick);
 
     function onPopupClick(e) {
       var popup = L.popup();
-      // var divS = <Soutien />;
-      // console.log("popup cliqué");
+      // console.log(this.props.interaction);
+      // this.props.onClick([true, false, true]);
+
       let cible = document.getElementById("soutien");
       cible.className = "box bg-1 visible";
 
@@ -72,8 +67,7 @@ class Map extends Component {
 
     function onMapClick(e) {
       var popup = L.popup();
-      // var divS = <Soutien />;
-      // console.log("popup cliqué");
+
       let cible = document.getElementById("soutien");
       cible.className = "box bg-1 hide";
 
@@ -101,7 +95,11 @@ class Map extends Component {
   }
 
   render() {
-    return <svg id="my_dataviz" width="100vh" height="100vh"></svg>;
+    return (
+      <div className="map" id="map">
+        <svg id="my_dataviz" width="100vh" height="100vh"></svg>;
+      </div>
+    );
   }
 }
 
