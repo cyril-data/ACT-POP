@@ -1,5 +1,7 @@
+"use strict";
 import React, { Component } from "react";
 import { Map, TileLayer, Marker, Popup } from "react-leaflet";
+import DATA from "./BDD.js";
 
 const Tiles =
   "https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}";
@@ -8,7 +10,7 @@ const Attr =
 const mapCenter = [46.79942865121552, 2.9865881441615505];
 const zoomLevel = 6;
 
-export default class SimpleExample extends Component {
+export default class MapReact extends Component {
   constructor(props) {
     super(props);
     this.handleClick = this.handleClick.bind(this);
@@ -16,13 +18,12 @@ export default class SimpleExample extends Component {
   }
 
   handleClick() {
-    console.log("SimpleExample handleClick");
-    this.props.onClick(true, false, false);
+    console.log("MapReact handleClick");
+    this.props.onClick(false, true, true);
   }
 
   render() {
     const position = [46.79942865121552, 2.98658814416155];
-    // console.log("SimpleExample props", this.props.onClick);
 
     const map = (
       <Map center={mapCenter} zoom={zoomLevel}>
@@ -34,11 +35,30 @@ export default class SimpleExample extends Component {
           }
           id={"mapbox/streets-v11"}
         />
-        <Marker position={position} key={`marker`} onClick={this.handleClick}>
+        {/* <Marker
+          position={DATA[0].lieu}
+          key={`marker`}
+          onClick={this.handleClick}
+        >
           <Popup>
-            A pretty CSS3 popup. <br /> Easily customizable.
+            {"lutte.forme"} <br /> <strong> {"lutte.cause"} </strong>
           </Popup>
         </Marker>
+        ; */}
+        {DATA.map(lutte => {
+          console.log("lutte.lieu", lutte.lieu, lutte.cause, lutte.forme);
+          return (
+            <Marker
+              position={lutte.lieu}
+              key={lutte.id}
+              onClick={this.handleClick}
+            >
+              <Popup>
+                {lutte.forme} <br /> <strong> {lutte.cause} </strong>
+              </Popup>
+            </Marker>
+          );
+        })}
       </Map>
     );
 

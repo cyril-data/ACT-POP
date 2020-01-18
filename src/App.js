@@ -1,9 +1,8 @@
 "use strict";
 import React, { Component } from "react";
-import Map from "./Map";
 import Compteur from "./Compteur";
 import Interaction from "./Interaction";
-import SimpleExample from "./SimpleExample";
+import MapReact from "./MapReact";
 
 class App extends Component {
   constructor(props) {
@@ -12,7 +11,8 @@ class App extends Component {
     this.state = {
       orga: false,
       participation: false,
-      soutien: false
+      soutien: false,
+      id_lutte: [1, 2]
     };
   }
 
@@ -31,7 +31,7 @@ class App extends Component {
       <div id="contenu">
         <Compteur />
         <div id="map_button">
-          <SimpleExample onClick={this.handleClick} inter={this.state} />
+          <MapReact onClick={this.handleClick} inter={this.state} />
 
           <Interaction inter={this.state} />
         </div>
