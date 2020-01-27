@@ -12,27 +12,29 @@ class App extends Component {
       orga: false,
       participation: false,
       soutien: false,
-      id_lutte: [1, 2]
+      changeMenu: false,
+      idLutte: 1,
+      position: [46.8, 3]
     };
   }
 
-  handleClick(orga, participation, soutien) {
+  handleClick(orga, participation, soutien, position, idLutte) {
     this.setState({
       orga: orga,
       participation: participation,
-      soutien: soutien
+      soutien: soutien,
+      position: position,
+      changeMenu: !this.state.changeMenu,
+      idLutte: idLutte
     });
   }
 
   render() {
-    console.log("APP state", this.state);
-
     return (
       <div id="contenu">
         <Compteur />
         <div id="map_button">
-          <MapReact onClick={this.handleClick} inter={this.state} />
-
+          <MapReact inter={this.state} onClick={this.handleClick} />
           <Interaction inter={this.state} />
         </div>
       </div>
