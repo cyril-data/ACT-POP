@@ -3,30 +3,42 @@ import React, { Component } from "react";
 import Organisation from "./Organisation";
 import Participation from "./Participation";
 import Soutien from "./Soutien";
+import DATA from "./BDD.js";
 
 class Interaction extends Component {
   render() {
-    console.log(
-      "Interaction  : ",
-      this.props.inter.orga,
-      this.props.inter.participation,
-      this.props.inter.soutien
-    );
+    const lutte = DATA.find(element => element.id == this.props.inter.idLutte);
+    const {
+      orga,
+      participation,
+      soutien,
+      changeMenu,
+      position
+    } = this.props.inter;
+    const condition = orga | participation | soutien;
+    let classNamemap = "hidden";
 
-    const condition =
-      this.props.inter.orga |
-      this.props.inter.participation |
-      this.props.inter.soutien;
+    condition
+      ? changeMenu
+        ? (classNamemap = "interaction2")
+        : (classNamemap = "interaction1")
+      : (classNamemap = "hidden");
 
-    console.log("Interaction condition", condition);
-    let classNamemap = "interaction";
-
-    condition ? (classNamemap = "interaction") : (classNamemap = "");
     return (
       <div id="interaction" className={classNamemap}>
-        {this.props.inter.orga && <Organisation />}
-        {this.props.inter.participation && <Participation />}
-        {this.props.inter.soutien && <Soutien />}
+        {orga ? (
+          <Organisation position={position} />
+        ) : (
+          participation | soutien && (
+            <div>
+              <div>
+                {lutte.forme} {lutte.cause}
+              </div>
+              <Participation />
+              <Soutien />
+            </div>
+          )
+        )}
       </div>
     );
   }

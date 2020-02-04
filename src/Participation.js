@@ -9,7 +9,7 @@ class Participation extends Component {
           className="button button--winona button--border-thin button--round-s"
           data-text="Je participe"
         >
-          <span> Je participe</span>
+          <span>Je participe</span>
         </button>
       </div>
     );

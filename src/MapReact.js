@@ -1,5 +1,5 @@
 "use strict";
-import React, { Component } from "react";
+import React, { createRef, Component } from "react";
 import { Map, TileLayer, Marker, Popup } from "react-leaflet";
 import DATA from "./BDD.js";
 
@@ -13,20 +13,24 @@ const zoomLevel = 6;
 export default class MapReact extends Component {
   constructor(props) {
     super(props);
-    this.handleClick = this.handleClick.bind(this);
-    this.state = { currentZoomLevel: zoomLevel };
+    this.handleClickPopup = this.handleClickPopup.bind(this);
+    this.handleClickMap = this.handleClickMap.bind(this);
+    this.state = {
+      currentZoomLevel: zoomLevel
+    };
   }
 
-  handleClick() {
-    console.log("MapReact handleClick");
-    this.props.onClick(false, true, true);
+  handleClickPopup(e, idLutte) {
+    this.props.onClick(false, true, true, e.latlng, idLutte);
+  }
+
+  handleClickMap(e) {
+    this.props.onClick(true, false, false, e.latlng);
   }
 
   render() {
-    const position = [46.79942865121552, 2.98658814416155];
-
     const map = (
-      <Map center={mapCenter} zoom={zoomLevel}>
+      <Map center={mapCenter} zoom={zoomLevel} onClick={this.handleClickMap}>
         <TileLayer
           attribution={Attr}
           url={Tiles}
@@ -35,23 +39,14 @@ export default class MapReact extends Component {
           }
           id={"mapbox/streets-v11"}
         />
-        {/* <Marker
-          position={DATA[0].lieu}
-          key={`marker`}
-          onClick={this.handleClick}
-        >
-          <Popup>
-            {"lutte.forme"} <br /> <strong> {"lutte.cause"} </strong>
-          </Popup>
-        </Marker>
-        ; */}
+        this.props.inter.orga && (
+        <Marker position={this.props.inter.position} key={"newOrga"}></Marker>)
         {DATA.map(lutte => {
-          console.log("lutte.lieu", lutte.lieu, lutte.cause, lutte.forme);
           return (
             <Marker
               position={lutte.lieu}
               key={lutte.id}
-              onClick={this.handleClick}
+              onClick={e => this.handleClickPopup(e, lutte.id)}
             >
               <Popup>
                 {lutte.forme} <br /> <strong> {lutte.cause} </strong>
