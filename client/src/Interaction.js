@@ -3,11 +3,13 @@ import React, { Component } from "react";
 import Organisation from "./Organisation";
 import Participation from "./Participation";
 import Soutien from "./Soutien";
-import DATA from "./BDD.js";
 
 class Interaction extends Component {
   render() {
-    const lutte = DATA.find(element => element.id == this.props.inter.idLutte);
+    const lutte = this.props.inter.luttes.find(
+      element => element._id == this.props.inter.idLutte
+    );
+
     const {
       orga,
       participation,
@@ -15,6 +17,7 @@ class Interaction extends Component {
       changeMenu,
       position
     } = this.props.inter;
+
     const condition = orga | participation | soutien;
     let classNamemap = "hidden";
 
@@ -27,12 +30,13 @@ class Interaction extends Component {
     return (
       <div id="interaction" className={classNamemap}>
         {orga ? (
-          <Organisation position={position} />
+          <Organisation position={position} onSubmit={this.props.onSubmit} />
         ) : (
           participation | soutien && (
             <div>
               <div>
                 {lutte.forme} {lutte.cause}
+                <img src={lutte.imagePreviewUrl} className="previewImg" />;
               </div>
               <Participation />
               <Soutien />
