@@ -1,42 +1,49 @@
 "use strict";
 import React, { Component } from "react";
+import axios from "axios";
+
+const apiUrl = `http://localhost:8080`;
 
 class Organisation extends Component {
   constructor(props) {
     super(props);
     this._handleClick = this._handleClick.bind(this);
-    this._handleChangeCollectif = this._handleChangeCollectif.bind(this);
-    this._handleChangeCause = this._handleChangeCause.bind(this);
-    this._handleChangedate = this._handleChangedate.bind(this);
     this._handleImageChange = this._handleImageChange.bind(this);
     this._handleSubmit = this._handleSubmit.bind(this);
+    this.onChange = this.onChange.bind(this);
     this.state = {
       menuOrga: false,
-      collectif: "   ",
-      cause: "   ",
-      date: "   ",
-      file: "",
+      collectif: "",
+      cause: "",
+      date: "",
+      lat: 0.0,
+      lng: 0.0,
+      affiche: "",
+      popup: "",
       imagePreviewUrl: ""
     };
   }
 
   _handleClick() {
     this.setState({ menuOrga: true });
+    this.setState({
+      lat: this.props.position.lat,
+      lng: this.props.position.lng
+    });
   }
 
-  _handleChangeCollectif(event) {
-    this.setState({ collectif: event.target.value });
-  }
-  _handleChangeCause(event) {
-    this.setState({ cause: event.target.value });
-  }
-  _handleChangedate(event) {
-    this.setState({ date: event.target.value });
+  onChange(e) {
+    const state = this.state;
+    state[e.target.name] = e.target.value;
+    this.setState(state);
   }
 
   _handleSubmit() {
-    this.setState({ menuOrga: false });
     event.preventDefault();
+    this.setState({ menuOrga: false });
+    axios.post(apiUrl + "/lutte-creation", this.state).then(result => {
+      this.props.onSubmit();
+    });
   }
 
   _handleImageChange(e) {
@@ -44,10 +51,9 @@ class Organisation extends Component {
 
     let reader = new FileReader();
     let file = e.target.files[0];
-
     reader.onloadend = () => {
       this.setState({
-        file: file,
+        affiche: file,
         imagePreviewUrl: reader.result
       });
     };
@@ -56,6 +62,12 @@ class Organisation extends Component {
   }
 
   render() {
+    console.log(
+      "Orga lat, lng props",
+      this.props.position.lat,
+      this.props.position.lng
+    );
+
     const lat = this.props.position.lat.toFixed(2);
     const lng = this.props.position.lng.toFixed(2);
 
@@ -87,7 +99,8 @@ class Organisation extends Component {
                   className="inputOrga button--winona button--border-thin button--round-s"
                   type="text"
                   value={this.state.collectif}
-                  onChange={this._handleChangeCollectif}
+                  name="collectif"
+                  onChange={this.onChange}
                 />
               </label>
               <label className="labelOrga">
@@ -96,16 +109,18 @@ class Organisation extends Component {
                   className="inputOrga button--winona button--border-thin button--round-s"
                   type="text"
                   value={this.state.cause}
-                  onChange={this._handleChangeCause}
+                  name="cause"
+                  onChange={this.onChange}
                 />
               </label>
               <label className="labelOrga">
-                Date de la lutte :
+                Date de la lutte : (YYYY-MM-DD)
                 <input
                   className="inputOrga button--winona button--border-thin button--round-s"
                   type="text"
                   value={this.state.date}
-                  onChange={this._handleChangedate}
+                  name="date"
+                  onChange={this.onChange}
                 />
               </label>
               <label
@@ -120,6 +135,7 @@ class Organisation extends Component {
                 id="selectAffiche"
                 name="selectAffiche"
                 text={"Upload File"}
+                name="file"
                 onChange={this._handleImageChange}
               />
               <input

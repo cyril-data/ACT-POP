@@ -1,24 +1,46 @@
 const express = require("express");
 const app = express();
 const connectDb = require("./src/connection");
-const User = require("./src/User.model");
+const Lutte = require("./src/Lutte.model");
 const cors = require("cors");
+const bodyParser = require("body-parser");
 
 app.use(cors());
 const PORT = 8080;
 
-app.get("/users", async (req, res) => {
-  const users = await User.find();
+app.use(bodyParser.json());
 
-  res.json(users);
+app.get("/luttes", async (req, res) => {
+  const luttes = await Lutte.find();
+  res.json(luttes);
 });
 
-app.get("/user-create", async (req, res) => {
-  const user = new User({ username: "userTest" });
+/* Trouver une seule lutte avec id */
+app.get("/luttes:id", async (req, res) => {
+  const lutte = await Lutte.findById(req.params.id);
+  res.json(lutte);
+});
 
-  await user.save().then(() => console.log("User created"));
+app.post("/lutte-creation", async (req, res) => {
+  console.log("req", req.body);
 
-  res.send("User created \n");
+  const dateClient = new Date(req.body.date);
+  console.log("dateClient", dateClient);
+
+  const lutte = new Lutte({
+    collectif: req.body.collectif,
+    forme: req.body.forme,
+    cause: req.body.cause,
+    date: dateClient,
+    lat: req.body.lat,
+    lng: req.body.lng,
+    affiche: req.body.affiche,
+    popup: req.body.popup
+  });
+
+  await lutte.save().then(() => console.log("Lutte creee"));
+
+  res.send("Lutte creee \n");
 });
 
 app.listen(PORT, function() {

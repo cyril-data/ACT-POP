@@ -13,30 +13,39 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.handleClick = this.handleClick.bind(this);
+    this.loadluttes = this.loadluttes.bind(this);
     this.state = {
       orga: false,
       participation: false,
       soutien: false,
       changeMenu: false,
-      idLutte: 1,
       position: [46.8, 3],
-      users: []
+      luttes: [],
+      idLutte: 1
     };
   }
-  async createUser() {
-    await axios.get(apiUrl + "/user-create");
-    this.loadUsers();
-  }
 
-  async loadUsers() {
-    const res = await axios.get(apiUrl + "/users");
+  async loadluttes() {
+    const res = await axios.get(apiUrl + "/luttes");
+    console.log("load Lutte dans APP", res.data);
     this.setState({
-      users: res.data
+      luttes: res.data
     });
   }
+  // ***
+  // Recherche d'un element dans la base est remplacée par une
+  // recherche dans le tableau lutte[] de React composant Interaction
+  //
+  // async loadlutte() {
+  //   const res = await axios.get(apiUrl + "/luttes" + this.state.idLutte);
+  //   this.setState({
+  //     lutte: res.data
+  //   });
+  // }
+  // ***
 
   componentDidMount() {
-    this.loadUsers();
+    this.loadluttes();
   }
 
   handleClick(orga, participation, soutien, position, idLutte) {
@@ -56,16 +65,8 @@ class App extends Component {
         <Compteur />
         <div id="map_button">
           <MapReact inter={this.state} onClick={this.handleClick} />
-          <Interaction inter={this.state} />
+          <Interaction inter={this.state} onSubmit={this.loadluttes} />
         </div>
-
-        <button onClick={() => this.createUser()}>Create User</button>
-        <p>Users list:</p>
-        <ul>
-          {this.state.users.map(user => (
-            <li key={user._id}>id : {user.username}</li>
-          ))}
-        </ul>
       </div>
     );
   }

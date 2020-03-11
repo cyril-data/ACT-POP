@@ -1,7 +1,7 @@
 "use strict";
-import React, { createRef, Component } from "react";
+import React, { creationRef, Component } from "react";
 import { Map, TileLayer, Marker, Popup } from "react-leaflet";
-import DATA from "./BDD.js";
+// import DATA from "./BDD.js";
 
 const Tiles =
   "https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}";
@@ -21,6 +21,7 @@ export default class MapReact extends Component {
   }
 
   handleClickPopup(e, idLutte) {
+    console.log("e.latlng", e.latlng);
     this.props.onClick(false, true, true, e.latlng, idLutte);
   }
 
@@ -29,6 +30,19 @@ export default class MapReact extends Component {
   }
 
   render() {
+    // this.props.inter.luttes.map(lutte => {
+    //   console.log("lutte", lutte);
+    // });
+    const luttes = this.props.inter.luttes;
+
+    //  <ul>
+    //       {this.props.inter.luttes.map(lutte => (
+    //         <li key={lutte._id}>
+    //           lat : {lutte.lat}, lng : {lutte.lng}{" "}
+    //         </li>
+    //       ))}
+    //     </ul> */}
+
     const map = (
       <Map center={mapCenter} zoom={zoomLevel} onClick={this.handleClickMap}>
         <TileLayer
@@ -41,15 +55,15 @@ export default class MapReact extends Component {
         />
         this.props.inter.orga && (
         <Marker position={this.props.inter.position} key={"newOrga"}></Marker>)
-        {DATA.map(lutte => {
+        {luttes.map(lutte => {
           return (
             <Marker
-              position={lutte.lieu}
-              key={lutte.id}
-              onClick={e => this.handleClickPopup(e, lutte.id)}
+              position={[lutte.lat, lutte.lng]}
+              key={lutte._id}
+              onClick={e => this.handleClickPopup(e, lutte._id)}
             >
               <Popup>
-                {lutte.forme} <br /> <strong> {lutte.cause} </strong>
+                {lutte.collectif} <br /> <strong> {lutte.cause} </strong>
               </Popup>
             </Marker>
           );

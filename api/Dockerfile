@@ -10,4 +10,4 @@ COPY . .
 
 #Expose port and start application
 EXPOSE 8080
-CMD [ "npm", "dev" ]
+CMD npm run start:dev
