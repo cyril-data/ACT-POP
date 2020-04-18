@@ -5,12 +5,27 @@ import Participation from "./Participation";
 import Soutien from "./Soutien";
 
 class Interaction extends Component {
+  constructor(props) {
+    super(props);
+    this.handleAccueil = this.handleAccueil.bind(this);
+    this.state = {
+      accueil: true
+    };
+  }
+
+  handleAccueil(accueil) {
+    this.setState({
+      accueil: accueil
+    });
+  }
+
   render() {
     const lutte = this.props.inter.luttes.find(
       element => element._id == this.props.inter.idLutte
     );
 
     const {
+      accueil,
       orga,
       participation,
       soutien,
@@ -28,22 +43,28 @@ class Interaction extends Component {
       : (classNamemap = "hidden");
 
     return (
-      <div id="interaction" className={classNamemap}>
-        {orga ? (
-          <Organisation position={position} onSubmit={this.props.onSubmit} />
-        ) : (
-          participation | soutien && (
-            <div>
+      accueil && (
+        <div id="interaction" className={classNamemap}>
+          {orga ? (
+            <Organisation
+              position={position}
+              onClick={this.props.onClick}
+              accueil={this.props.accueil}
+            />
+          ) : (
+            participation | soutien && (
               <div>
-                {lutte.forme} {lutte.cause}
-                <img src={lutte.imagePreviewUrl} className="previewImg" />;
+                <div>
+                  {lutte.forme} {lutte.cause}
+                  <img src={lutte.imagePreviewUrl} className="previewImg" />;
+                </div>
+                <Participation />
+                <Soutien />
               </div>
-              <Participation />
-              <Soutien />
-            </div>
-          )
-        )}
-      </div>
+            )
+          )}
+        </div>
+      )
     );
   }
 }

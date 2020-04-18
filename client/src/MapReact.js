@@ -35,14 +35,6 @@ export default class MapReact extends Component {
     // });
     const luttes = this.props.inter.luttes;
 
-    //  <ul>
-    //       {this.props.inter.luttes.map(lutte => (
-    //         <li key={lutte._id}>
-    //           lat : {lutte.lat}, lng : {lutte.lng}{" "}
-    //         </li>
-    //       ))}
-    //     </ul> */}
-
     const map = (
       <Map center={mapCenter} zoom={zoomLevel} onClick={this.handleClickMap}>
         <TileLayer

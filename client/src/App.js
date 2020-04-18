@@ -14,7 +14,10 @@ class App extends Component {
     super(props);
     this.handleClick = this.handleClick.bind(this);
     this.loadluttes = this.loadluttes.bind(this);
+    this.handleAccueil = this.handleAccueil.bind(this);
+
     this.state = {
+      accueil: true,
       orga: false,
       participation: false,
       soutien: false,
@@ -26,7 +29,7 @@ class App extends Component {
   }
 
   async loadluttes() {
-    const res = await axios.get(apiUrl + "/luttes");
+    const res = await axios.get(apiUrl + "/api/lutte");
     console.log("load Lutte dans APP", res.data);
     this.setState({
       luttes: res.data
@@ -37,7 +40,7 @@ class App extends Component {
   // recherche dans le tableau lutte[] de React composant Interaction
   //
   // async loadlutte() {
-  //   const res = await axios.get(apiUrl + "/luttes" + this.state.idLutte);
+  //   const res = await axios.get(apiUrl + "/api/lutte" + this.state.idLutte);
   //   this.setState({
   //     lutte: res.data
   //   });
@@ -48,8 +51,16 @@ class App extends Component {
     this.loadluttes();
   }
 
+  handleAccueil(accueil) {
+    this.loadluttes();
+    this.setState({
+      accueil: accueil
+    });
+  }
+
   handleClick(orga, participation, soutien, position, idLutte) {
     this.setState({
+      accueil: true,
       orga: orga,
       participation: participation,
       soutien: soutien,
@@ -57,6 +68,7 @@ class App extends Component {
       changeMenu: !this.state.changeMenu,
       idLutte: idLutte
     });
+    // this.loadluttes();
   }
 
   render() {
@@ -65,7 +77,11 @@ class App extends Component {
         <Compteur />
         <div id="map_button">
           <MapReact inter={this.state} onClick={this.handleClick} />
-          <Interaction inter={this.state} onSubmit={this.loadluttes} />
+          <Interaction
+            inter={this.state}
+            onClick={this.handleClick}
+            accueil={this.handleAccueil}
+          />
         </div>
       </div>
     );
