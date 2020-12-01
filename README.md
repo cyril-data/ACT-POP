@@ -15,4 +15,4 @@ cd client
 npm install
 npm run build
 
-ouvrir #client/public/index.html# dans votre navigateur 
+ouvrir avec votre navigateur _client/public/index.html_
