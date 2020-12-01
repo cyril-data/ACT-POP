@@ -1,5 +1,11 @@
 import React from "react";
 import ReactDOM from "react-dom";
+// import "bootstrap/dist/css/bootstrap.min.css";
+
 import App from "./App";
+
+// import "./assets/scss/black-dashboard-react.scss";
+// import "./assets/demo/demo.css";
+// import "./assets/css/nucleo-icons.css";
 
 ReactDOM.render(<App />, document.getElementById("app"));

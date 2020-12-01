@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 
-const Lutte = require("./Lutte.model");
+const ActPop = require("../models/ActPop.model");
 
 const network = process.env.NODE_ENV === "development" ? "localhost" : "mongo";
 
