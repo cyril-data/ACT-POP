@@ -7,6 +7,8 @@ import Login from "./Login";
 
 const apiUrl = `http://localhost:8080`;
 
+import { Container } from "reactstrap";
+
 class Organisation extends Component {
   constructor(props) {
     super(props);
@@ -24,19 +26,19 @@ class Organisation extends Component {
       lng: 0.0,
       affiche: "",
       popup: "",
-      imagePreviewUrl: ""
+      imagePreviewUrl: "",
     };
   }
 
   _handleMenuForm() {
     this.setState({
-      menuForm: true
+      menuForm: true,
     });
   }
 
   _handleClickMenu() {
     this.setState({
-      menuOrga: true
+      menuOrga: true,
     });
   }
 
@@ -44,28 +46,15 @@ class Organisation extends Component {
     this.setState({
       menuOrga: false,
       lat: this.props.position.lat,
-      lng: this.props.position.lng
+      lng: this.props.position.lng,
     });
   }
 
   render() {
     return (
-      <div className="box bg-1" id="orga">
+      <div className="justify-center">
         {!this.state.menuForm ? (
-          this.state.menuOrga ? (
-            <div>
-              <button
-                className="button button--winona button--border-thin button--round-s"
-                id="orgaButton"
-                data-text="J'organise"
-                onClick={this._handleClick}
-              >
-                <span> J'organise </span>
-              </button>
-            </div>
-          ) : (
-            <SignUp menuForm={this._handleMenuForm} />
-          )
+          <SignUp menuForm={this._handleMenuForm} />
         ) : (
           <FormOrga
             position={this.props.position}

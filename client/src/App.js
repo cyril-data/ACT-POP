@@ -9,56 +9,82 @@ require("babel-polyfill");
 
 const apiUrl = `http://localhost:8080`;
 
+// // react plugin used to create charts
+import { Line, Bar, Doughnut, Scatter } from "react-chartjs-2";
+
+// reactstrap components
+import { Row, Container } from "reactstrap";
+// import {
+//   Button,
+//   ButtonGroup,
+//   Card,
+//   CardHeader,
+//   CardBody,
+//   CardTitle,
+//   DropdownToggle,
+//   DropdownMenu,
+//   DropdownItem,
+//   UncontrolledDropdown,
+//   Label,
+//   FormGroup,
+//   Form,
+//   Input,
+//   Table,
+//   Row,
+//   Col,
+//   UncontrolledTooltip,
+// } from "reactstrap";
+
 class App extends Component {
   constructor(props) {
     super(props);
     this.handleClick = this.handleClick.bind(this);
-    this.loadluttes = this.loadluttes.bind(this);
+    this.loadActPops = this.loadActPops.bind(this);
     this.handleAccueil = this.handleAccueil.bind(this);
 
     this.state = {
-      accueil: true,
+      accueil: false,
       orga: false,
       participation: false,
       soutien: false,
       changeMenu: false,
       position: [46.8, 3],
-      luttes: [],
-      idLutte: 1
+      actPops: [],
+      idActPop: 1,
     };
   }
 
-  async loadluttes() {
-    const res = await axios.get(apiUrl + "/api/lutte");
-    console.log("load Lutte dans APP", res.data);
+  async loadActPops() {
+    const res = await axios.get(apiUrl + "/api/actPop");
+    console.log("load ActPop dans APP", res.data);
     this.setState({
-      luttes: res.data
+      actPops: res.data,
     });
   }
   // ***
   // Recherche d'un element dans la base est remplacée par une
-  // recherche dans le tableau lutte[] de React composant Interaction
+  // recherche dans le tableau actPop[] de React composant Interaction
   //
-  // async loadlutte() {
-  //   const res = await axios.get(apiUrl + "/api/lutte" + this.state.idLutte);
+  // async loadactPop() {
+  //   const res = await axios.get(apiUrl + "/api/actPop" + this.state.idActPop);
   //   this.setState({
-  //     lutte: res.data
+  //     actPop: res.data
   //   });
   // }
   // ***
 
   componentDidMount() {
-    this.loadluttes();
+    this.loadActPops();
   }
 
   handleAccueil(accueil) {
-    this.loadluttes();
+    this.loadActPops();
     this.setState({
-      accueil: accueil
+      accueil: accueil,
     });
   }
 
-  handleClick(orga, participation, soutien, position, idLutte) {
+  handleClick(orga, participation, soutien, position, idActPop) {
     this.setState({
       accueil: true,
       orga: orga,
@@ -66,24 +92,26 @@ class App extends Component {
       soutien: soutien,
       position: position,
       changeMenu: !this.state.changeMenu,
-      idLutte: idLutte
+      idActPop: idActPop,
     });
-    // this.loadluttes();
+    // this.loadActPops();
   }
 
   render() {
     return (
-      <div id="contenu">
-        <Compteur />
-        <div id="map_button">
+      <Container id="contenu">
+        <Row>
+          <Compteur nbrActPop={this.state.actPops.length} />
+        </Row>
+        <Row>
           <MapReact inter={this.state} onClick={this.handleClick} />
-          <Interaction
-            inter={this.state}
-            onClick={this.handleClick}
-            accueil={this.handleAccueil}
-          />
-        </div>
-      </div>
+        </Row>
+        <Interaction
+          inter={this.state}
+          onClick={this.handleClick}
+          accueil={this.handleAccueil}
+        />
+      </Container>
     );
   }
 }

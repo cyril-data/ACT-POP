@@ -1,5 +1,24 @@
 import React, { Component } from "react";
 import axios from "axios";
+import {
+  Card,
+  CardHeader,
+  CardBody,
+  CardTitle,
+  CardSubtitle,
+  Row,
+  Container,
+  Col,
+  Form,
+  Label,
+  FormGroup,
+  Button,
+  Input,
+  FormText,
+  Jumbotron,
+  Badge,
+} from "reactstrap";
+
 const apiUrl = `http://localhost:8080`;
 
 let documentData;
@@ -48,56 +67,105 @@ class SignUp extends Component {
 
   render() {
     return (
-      <div className="divOrga interaction3">
-        <div className="card">
-          {this.state.login ? <h1>Connexion</h1> : <h1>création de compte</h1>}
-          <form onSubmit={this._handleSubmit}>
-            <input
-              className="inputOrga button--winona button--border-thin button--round-s"
-              placeholder="email goes here..."
-              name="email"
-              type="text"
-              value={this.state.email}
-              onChange={this.handleChange}
-            />
-            <input
-              className="inputOrga button--winona button--border-thin button--round-s"
-              placeholder="Password goes here..."
-              name="password"
-              type="password"
-              value={this.state.password}
-              onChange={this.handleChange}
-            />
+      <Jumbotron>
+        <Container>
+          <Row>
+            <Col text-center>
+              <h1 style={{ textAlign: "center" }}>J'organise mon action</h1>
+            </Col>
+          </Row>
+          <Row>
+            <Card>
+              <CardBody>
+                {this.state.login ? (
+                  <CardTitle>Connection :</CardTitle>
+                ) : (
+                  <CardTitle>Création de compte :</CardTitle>
+                )}
+                <Form onSubmit={this._handleSubmit}>
+                  <FormGroup controlId="formBasicEmail">
+                    <Row>
+                      <Col>
+                        <Label for="exampleEmail">Adresse mail</Label>
+                      </Col>
+                      {/* <Label for="exampleEmail">Email</Label> */}
+                      <Col>
+                        <Input
+                          type="email"
+                          placeholder="Enter email"
+                          name="email"
+                          type="text"
+                          value={this.state.email}
+                          onChange={this.handleChange}
+                        />
+                        <FormText className="text-muted">
+                          Nous ne partagerons jamais votre email avec quelqu'un
+                          d'autre.
+                        </FormText>
+                      </Col>
+                    </Row>
+                  </FormGroup>
 
-            <div>
-              <input
-                className="inputOrga button--winona button--border-thin button--round-s"
-                value={this.state.login ? "se connecter" : "créer son compte"}
-                type="submit"
-              />
-              {this.state.error_login && (
-                <span> mot de passe ou identifiant incorrect </span>
-              )}
-            </div>
-          </form>
-          {this.state.login && (
-            <div>
-              <span>
-                {" "}
-                <br /> Vous n'avez pas encore de compte ?{" "}
-              </span>
-              <button
-                className="inputOrga button--winona button--border-thin button--round-s"
-                id="Signup"
-                data-text="Créez-en un"
-                onClick={this._handleClick}
-              >
-                <span> Créez-en un ! </span>
-              </button>
-            </div>
-          )}
-        </div>
-      </div>
+                  <FormGroup controlId="formBasicPassword">
+                    <Row>
+                      <Col>
+                        <Label>Mot de passe</Label>
+                      </Col>
+                      <Col>
+                        <Input
+                          type="password"
+                          placeholder="password"
+                          name="password"
+                          type="text"
+                          value={this.state.password}
+                          onChange={this.handleChange}
+                        />
+                      </Col>
+                    </Row>
+                  </FormGroup>
+                  <Input
+                    value={
+                      this.state.login ? "se connecter" : "créer son compte"
+                    }
+                    type="submit"
+                  />
+                  {this.state.error_login && (
+                    <FormText className="text-muted">
+                      mot de passe ou identifiant incorrect
+                    </FormText>
+                  )}
+                  {/* </div> */}
+                </Form>
+
+                {this.state.login && (
+                  <FormGroup controlId="formBasicPassword">
+                    <Container fluid>
+                      <Row>
+                        <Col sm={{ size: "auto" }}>
+                          <FormText className="text-muted">
+                            Vous n'avez pas encore de compte ?{" "}
+                          </FormText>
+                        </Col>
+                        <Col sm={{ size: "auto", offset: 1 }}>
+                          <Button
+                            // className="inputOrga button--winona button--border-thin button--round-s"
+                            id="Signup"
+                            data-text="Créez-en un"
+                            onClick={this._handleClick}
+                          >
+                            Créez-en un !
+                          </Button>
+                        </Col>
+                      </Row>
+                    </Container>
+                  </FormGroup>
+                )}
+              </CardBody>
+              {/* </div> */}
+            </Card>
+          </Row>
+        </Container>
+      </Jumbotron>
     );
   }
 

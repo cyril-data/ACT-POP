@@ -4,24 +4,43 @@ import Organisation from "./Organisation";
 import Participation from "./Participation";
 import Soutien from "./Soutien";
 
+import {
+  Card,
+  CardHeader,
+  CardBody,
+  CardTitle,
+  CardSubtitle,
+  Row,
+  Container,
+  Col,
+  Form,
+  Label,
+  FormGroup,
+  Button,
+  Input,
+  FormText,
+  Jumbotron,
+  Badge,
+} from "reactstrap";
+
 class Interaction extends Component {
   constructor(props) {
     super(props);
     this.handleAccueil = this.handleAccueil.bind(this);
     this.state = {
-      accueil: true
+      accueil: true,
     };
   }
 
   handleAccueil(accueil) {
     this.setState({
-      accueil: accueil
+      accueil: accueil,
     });
   }
 
   render() {
-    const lutte = this.props.inter.luttes.find(
-      element => element._id == this.props.inter.idLutte
+    const actPop = this.props.inter.actPops.find(
+      (element) => element._id == this.props.inter.idActPop
     );
 
     const {
@@ -30,7 +49,7 @@ class Interaction extends Component {
       participation,
       soutien,
       changeMenu,
-      position
+      position,
     } = this.props.inter;
 
     const condition = orga | participation | soutien;
@@ -43,28 +62,65 @@ class Interaction extends Component {
       : (classNamemap = "hidden");
 
     return (
-      accueil && (
-        <div id="interaction" className={classNamemap}>
-          {orga ? (
-            <Organisation
-              position={position}
-              onClick={this.props.onClick}
-              accueil={this.props.accueil}
-            />
-          ) : (
-            participation | soutien && (
-              <div>
-                <div>
-                  {lutte.forme} {lutte.cause}
-                  <img src={lutte.imagePreviewUrl} className="previewImg" />;
-                </div>
-                <Participation />
-                <Soutien />
-              </div>
-            )
-          )}
-        </div>
-      )
+      accueil &&
+      // <div id="interaction" className={classNamemap}>
+      // <div id="interaction">
+      (orga ? (
+        <Organisation
+          position={position}
+          onClick={this.props.onClick}
+          accueil={this.props.accueil}
+        />
+      ) : (
+        participation | soutien && (
+          <div className="justify-center">
+            <Jumbotron>
+              <Container>
+                <Row>
+                  <Col text-center>
+                    <h1 style={{ textAlign: "center" }}>{actPop.nom}</h1>
+                  </Col>
+                </Row>
+                <Row>
+                  <Card>
+                    <CardBody>
+                      <Row>
+                        <CardTitle>Collectif: {actPop.collectif}</CardTitle>
+                      </Row>
+
+                      <Row>
+                        {" "}
+                        <CardTitle>Date: {actPop.date}</CardTitle>
+                      </Row>
+
+                      <Row>
+                        <CardTitle>Affiche:</CardTitle>
+                        <img
+                          src={actPop.imagePreviewUrl}
+                          className="previewImg"
+                        />
+                      </Row>
+                    </CardBody>
+                  </Card>
+                </Row>
+                <Row>
+                  <Participation />
+                </Row>
+                <Row>
+                  <Soutien />
+                </Row>
+              </Container>
+            </Jumbotron>
+            {/* <div>
+              {actPop.forme} {actPop.nom}
+              <img src={actPop.imagePreviewUrl} className="previewImg" />;
+            </div>
+            <Participation />
+            <Soutien /> */}
+          </div>
+        )
+      ))
+      // </div>
     );
   }
 }

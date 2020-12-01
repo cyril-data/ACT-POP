@@ -1,7 +1,7 @@
 {
-  "name": "enlutte.api",
+  "name": "actPop.api",
   "version": "1.0.0",
-  "description": "## en lutte api",
+  "description": "## actPop api",
   "scripts": {
     "start:db": "docker run -p 127.0.0.1:27017:27017 -d mongo:4.1.13-bionic",
     "prestart:dev": "npm run start:db",
@@ -19,7 +19,8 @@
     "jsonwebtoken": "^8.5.1",
     "mongodb": "^3.5.4",
     "mongoose": "^5.6.1",
-    "mongoose-unique-validator": "^2.0.3"
+    "mongoose-unique-validator": "^2.0.3",
+    "multer": "^1.4.2"
   },
   "devDependencies": {
     "nodemon": "^1.19.1"
